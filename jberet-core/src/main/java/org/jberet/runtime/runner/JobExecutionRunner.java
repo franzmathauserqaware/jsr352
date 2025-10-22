@@ -99,6 +99,8 @@ public final class JobExecutionRunner extends CompositeExecutionRunner<JobContex
                 break;
         }
 
+        jobExecution.setEndTime(System.currentTimeMillis());
+
         batchContext.getJobRepository().updateJobExecution(jobExecution, true, saveJobParameters);
         batchContext.setTransientUserData(null);
 

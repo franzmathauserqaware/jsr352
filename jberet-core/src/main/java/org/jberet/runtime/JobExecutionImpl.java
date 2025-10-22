@@ -31,7 +31,6 @@ import org.jberet._private.BatchLogger;
 import org.jberet.creation.ArtifactCreationContext;
 import org.jberet.job.model.Job;
 import org.jberet.job.model.JobFactory;
-import org.jberet.util.BatchUtil;
 import org.wildfly.security.manager.WildFlySecurityManager;
 
 public final class JobExecutionImpl extends AbstractExecution implements JobExecution, Cloneable {
@@ -151,7 +150,11 @@ public final class JobExecutionImpl extends AbstractExecution implements JobExec
 
     @Override
     public void setBatchStatus(final BatchStatus batchStatus) {
-        super.setBatchStatus(batchStatus);
+
+        this.batchStatus = batchStatus;
+        if (BatchStatus.STARTED == batchStatus) {
+            startTime = System.currentTimeMillis();
+        }
         lastUpdatedTime = System.currentTimeMillis();
     }
 
@@ -239,6 +242,7 @@ public final class JobExecutionImpl extends AbstractExecution implements JobExec
 
     /**
      * Sets the user who started this job execution.
+     *
      * @param user the user who started this job execution; may be null
      * @since 1.2.2
      * @since 1.3.0.Beta4
@@ -329,6 +333,10 @@ public final class JobExecutionImpl extends AbstractExecution implements JobExec
 
     public void setLastUpdatedTime(final long lastUpdatedTime) {
         this.lastUpdatedTime = lastUpdatedTime;
+    }
+
+    public void setEndTime(final long endTime) {
+        this.endTime = endTime;
     }
 
     public void cleanUp() {

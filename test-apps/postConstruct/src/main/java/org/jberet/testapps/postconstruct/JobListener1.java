@@ -47,8 +47,8 @@ public class JobListener1 extends PostConstructPreDestroyBase implements JobList
         if (batchStatus != BatchStatus.COMPLETED) {
             throw new BatchRuntimeException("Expecting BatchStatus.COMPLETED in JobListener1.afterJob(), but got " + batchStatus);
         }
-        if (endTime == null) {
-            throw new BatchRuntimeException("Expecting a valid end time in JobListener1.afterJob(), but got " + endTime);
+        if (endTime != null) {
+            throw new BatchRuntimeException("Do not expect a valid end time in JobListener1.afterJob()");
         }
     }
 
